@@ -65,9 +65,9 @@
 
 | 组件 | 用途 |
 | :--- | :--- |
-| **Electron 28.x** | 桌面应用框架 |
+| **Electron 28.0** | 桌面应用框架 |
 | **Node.js** | 主进程运行环境 |
-| **Python 3.x** | 下载器脚本（打包为独立 EXE） |
+| **Python 3.12** | 下载器脚本（打包为独立 EXE） |
 | **PyInstaller** | 将 Python 脚本打包为无控制台单文件 EXE |
 | **Inno Setup** | 制作 Windows 安装包与卸载程序 |
 
