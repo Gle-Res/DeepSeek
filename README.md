@@ -91,7 +91,7 @@
 
 ## 📬 联系与反馈
 
-- GitHub Issues: 提交问题
+- [Issues](https://github.com/Gle-Res/DeepSeek/issues): 提交问题
 
 ---
 
