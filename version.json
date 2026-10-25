@@ -1,5 +1,4 @@
 {
   "version": "v2.0.0",
-  "intro": "DeepSeek 客户端 V2.1.0 正式版。\n1. 新增托盘运行。\n2. 支持检查更新。\n3. 新增内置浏览器。\n4. 修复已知 Bug。",
-  "filename": "DeepSeek_Setup-v2.0.0.exe"
+  "intro": "1. 新增软件更新功能。\n2. 新增托盘图标。\n3. 修复了一些已知问题。"
 }
