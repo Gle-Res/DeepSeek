@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="style.css">
+  <title>DeepSeek</title>
+</head>
+<body class="light-theme theme-windows">
+  
+  <div id="app-container">
+    <div class="top-drag-bar">
+      
+      <!-- 左侧 MacOS 红绿灯 -->
+      <div class="mac-controls-container">
+        <div class="mac-traffic-lights">
+          <!-- 关闭按钮 -->
+          <div class="mac-btn mac-close" id="mac-close" title="关闭">
+            <svg viewBox="0 0 12 12"><path d="M3.5 3.5 L8.5 8.5 M8.5 3.5 L3.5 8.5" stroke="#4d0000" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <!-- 最小化按钮 -->
+          <div class="mac-btn mac-min" id="mac-min" title="最小化">
+            <svg viewBox="0 0 12 12"><path d="M2.5 6 L9.5 6" stroke="#995700" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+          <!-- 最大化/还原按钮 -->
+          <div class="mac-btn mac-max" id="mac-max" title="最大化">
+            <!-- 全屏状态图标 -->
+            <svg class="icon-expand" viewBox="0 0 12 12">
+              <path d="M3 9 L3 5 L7 5 M3 9 L7 9 L7 5" stroke="#006500" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+            <!-- 还原状态图标（双向箭头，苹果原生还原图标） -->
+            <svg class="icon-restore" viewBox="0 0 12 12">
+              <path d="M3.5 8.5 L8.5 8.5 L8.5 3.5 M8.5 3.5 L3.5 3.5 L3.5 8.5" stroke="#006500" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="drag-space"></div>
+
+      <!-- 右侧 Windows 原生风格按键 -->
+      <div class="win-controls-container">
+        <div class="win-controls">
+          <button class="win-btn" id="win-min" title="最小化"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 5h10" stroke="currentColor" stroke-width="1.2"/></svg></button>
+          
+          <button class="win-btn" id="win-max" title="最大化">
+            <svg id="win-max-icon" width="10" height="10" viewBox="0 0 10 10">
+              <rect x="0.5" y="0.5" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </button>
+          
+          <button class="win-btn close" id="win-close" title="关闭"><svg width="10" height="10" viewBox="0 0 10 10"><path d="M0 0l10 10M10 0L0 10" stroke="currentColor" stroke-width="1.2"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('win-min').onclick = () => window.electronAPI.minimize();
+    document.getElementById('win-max').onclick = () => window.electronAPI.maximize();
+    document.getElementById('win-close').onclick = () => window.electronAPI.close();
+
+    document.getElementById('mac-close').onclick = () => window.electronAPI.close();
+    document.getElementById('mac-min').onclick = () => window.electronAPI.minimize();
+    document.getElementById('mac-max').onclick = () => window.electronAPI.maximize();
+
+    window.electronAPI.onApplyTheme((theme) => {
+      const body = document.body;
+      if (theme === 'macos') {
+        body.classList.remove('theme-windows');
+        body.classList.add('theme-macos');
+      } else {
+        body.classList.remove('theme-macos');
+        body.classList.add('theme-windows');
+      }
+    });
+
+    const winMaxIcon = document.getElementById('win-max-icon');
+    const iconMax = `<rect x="0.5" y="0.5" width="9" height="9" fill="none" stroke="currentColor" stroke-width="1.2"/>`;
+    const iconRestore = `
+      <rect x="0.5" y="2.5" width="7" height="7" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M2.5 2.5 L2.5 0.5 L9.5 0.5 L9.5 7.5 L7.5 7.5" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    `;
+
+    window.electronAPI.onWindowMaximized(() => {
+      winMaxIcon.innerHTML = iconRestore;
+      document.body.classList.add('window-maximized');
+    });
+
+    window.electronAPI.onWindowUnmaximized(() => {
+      winMaxIcon.innerHTML = iconMax;
+      document.body.classList.remove('window-maximized');
+    });
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const updateColorTheme = (e) => {
+      if (e.matches) {
+        document.body.classList.remove('light-theme');
+        document.body.classList.add('dark-theme');
+      } else {
+        document.body.classList.remove('dark-theme');
+        document.body.classList.add('light-theme');
+      }
+    };
+    mediaQuery.addListener(updateColorTheme);
+    updateColorTheme(mediaQuery);
+  </script>
+</body>
+</html>

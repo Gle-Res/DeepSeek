@@ -1,0 +1,47 @@
+{
+  "name": "DeepSeek",
+  "version": "2.1.0",
+  "description": "DeepSeek",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win"
+  },
+  "author": "Gle-Res",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.deepseek.desktop",
+    "productName": "DeepSeek",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "app",
+        "to": "app"
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "app/icon/icon.ico" 
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "DeepSeek",
+      "installerIcon": "app/icon/icon.ico",
+      "uninstallerIcon": "app/icon/icon.ico",
+      "installerHeaderIcon": "app/icon/icon.ico"
+    }
+  }
+}
