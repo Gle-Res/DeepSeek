@@ -1,0 +1,105 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; }
+
+#app-container {
+  width: 100%;
+  height: 100%;
+  background-color: var(--bar-bg);
+  display: flex;
+  flex-direction: column;
+}
+
+body.light-theme {
+  --bar-bg: #f6f6f6;
+  --border-color: #dcdcdc; 
+  --win-btn-hover: #e5e5e5;
+  --win-btn-text: #333;
+}
+body.dark-theme {
+  --bar-bg: #1e1e1e; 
+  --border-color: #333333;
+  --win-btn-hover: #333333;
+  --win-btn-text: #fff;
+}
+
+.top-drag-bar {
+  width: 100%;
+  height: 40px; 
+  background-color: var(--bar-bg);
+  display: flex;
+  align-items: center;
+  -webkit-app-region: drag;
+  border-bottom: 1px solid var(--border-color);
+  z-index: 9999;
+  position: relative;
+}
+
+.drag-space { flex: 1; height: 100%; }
+
+/* ================= Windows 风格 ================= */
+.win-controls-container {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  -webkit-app-region: no-drag;
+}
+.win-controls { display: flex; height: 100%; }
+.win-btn {
+  width: 46px; height: 100%; border: none; background: transparent;
+  color: var(--win-btn-text); display: flex; justify-content: center; align-items: center;
+  cursor: pointer; transition: background 0.1s;
+}
+.win-btn:hover { background: var(--win-btn-hover); }
+.win-btn.close:hover { background: #e81123; color: #fff; }
+
+/* ================= MacOS 风格（经典图1还原） ================= */
+.mac-controls-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 16px; 
+  -webkit-app-region: no-drag;
+  z-index: 10000;
+}
+
+.mac-traffic-lights { display: flex; gap: 8px; }
+
+.mac-btn {
+  width: 12px; height: 12px; border-radius: 50%; 
+  position: relative; cursor: default; 
+  display: flex; justify-content: center; align-items: center;
+  border: 0.5px solid rgba(0, 0, 0, 0.15); /* 细边框质感 */
+}
+
+.mac-close { background-color: #FF5F56; }
+.mac-min   { background-color: #FFBD2E; }
+.mac-max   { background-color: #27C93F; }
+
+/* 默认隐藏图标 */
+.mac-btn svg { width: 8px; height: 8px; opacity: 0; transition: opacity 0.1s ease-in-out; }
+.mac-traffic-lights:hover .mac-btn svg { opacity: 1; }
+
+/* 给图标注入经典的深色 */
+.mac-close svg path { stroke: #4d0000; }
+.mac-min svg path   { stroke: #995700; }
+.mac-max svg path   { stroke: #006500; }
+
+/* 失焦变灰 */
+body.window-blurred .mac-btn {
+  background-color: #e5e5e5;
+  border-color: #d4d4d4;
+}
+body.window-blurred .mac-btn svg { opacity: 0 !important; }
+
+/* ================= 核心切换逻辑 ================= */
+body.theme-windows .win-controls-container { display: flex; }
+body.theme-windows .mac-controls-container { display: none; }
+
+body.theme-macos .win-controls-container { display: none; }
+body.theme-macos .mac-controls-container { 
+  display: flex; 
+  position: absolute; 
+  left: 0; 
+  top: 0; 
+  height: 40px;
+}
